@@ -5,6 +5,7 @@ from datetime import datetime
 from decimal import Decimal
 
 from django.db import transaction
+from django.utils.dateparse import parse_date
 from termcolor import colored
 import django
 import jsonpath
@@ -29,6 +30,13 @@ from apps.migrate.onodera.save.models import (
     CorporateGroupUnity,
     PriceList, PriceListUnity, PriceListSku
 )
+
+
+def format_date(date_string):
+    date_object = datetime.strptime(date_string, '%d/%m/%Y')
+    formatted_date = date_object.strftime('%Y-%m-%d')
+    return formatted_date
+
 
 corporate_group_unity = CorporateGroupUnity.objects.filter(
     id=parametros.codigo_gester
@@ -119,9 +127,9 @@ for price_list_json in price_lists_json:
                     price_list.description = response_price_list_json["descricaoTabela"]
                     price_list.corporate_group_id = parametros.corporate_group_id
                     price_list.start_date = ifNone(
-                        response_price_list_json["dataInicioVigencia"], "1901-01-01"
+                        format_date(response_price_list_json["dataInicioVigencia"]), "1901-01-01"
                     )
-                    price_list.end_date = ifNone(response_price_list_json["dataFimVigencia"], "9999-12-31")
+                    price_list.end_date = ifNone(format_date(response_price_list_json["dataFimVigencia"]), "9999-12-31")
                     price_list.current = True
                     price_list.send_franchisor = True
                     price_list.send_franchisee = True
@@ -220,8 +228,8 @@ for price_list_json in price_lists_json:
                         price_list_sku.price_list_id = price_list.id
                         price_list_sku.maximum_discount = preco_item["desconto"] * 100
                         price_list_sku.discount_price = (
-                            Decimal(discount / 100)
-                        ) * Decimal(preco_item["preco"])
+                                                            Decimal(discount / 100)
+                                                        ) * Decimal(preco_item["preco"])
                         price_list_sku.save()
 
                         print(f"PriceListSku {price_list_sku.id} {acao}")
