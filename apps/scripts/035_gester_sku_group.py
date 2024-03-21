@@ -104,7 +104,7 @@ for tipo_agenda_json in tipos_agenda_json:
                 sku_group.is_template = False
                 sku_group.name = tipo_agenda_json["descricao"]
                 sku_group.type = "service"
-                sku_group.abbreviated_name = tipo_agenda_json["descricao"]
+                sku_group.abbreviated_name = tipo_agenda_json["descricao"][:8]
                 sku_group.corporate_group_id = parametros.corporate_group_id
                 sku_group.save()
 

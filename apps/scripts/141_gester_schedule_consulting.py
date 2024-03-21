@@ -145,7 +145,7 @@ for agendamento_list_json in agendamentos_list_json:
 
                     ### BUSCA ID DO USUÁRIO ###
                     partner_user = Partner.objects.filter(
-                        id=leTraducaoId("usuario", response_agendamento_json["idUsuario"], "partner")
+                        id=leTraducaoId("funcionario", response_agendamento_json["idUsuario"], "partner")
                     ).first()
                     access_user = AccessUser.objects.filter(
                         partner_id=partner_user.id if partner_user else 1

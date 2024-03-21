@@ -436,7 +436,7 @@ def leTraducaoId(
 
 def traducaoUsuario(legacy_user_id):
     if legacy_user_id is not None:
-        access_user_id = leTraducaoId("usuario", legacy_user_id, "access_user")
+        access_user_id = leTraducaoId("funcionario", legacy_user_id, "access_user")
         access_user = AccessUser.objects.filter(id=access_user_id).first()
         return access_user.id if access_user else 1
 

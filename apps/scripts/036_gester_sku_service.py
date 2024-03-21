@@ -59,7 +59,7 @@ url = "http://onoderapt.swerp.com.br/token"
 headers = {"content-type": "multipart/form-data"}
 data = {
     "grant_type": "password",
-    "username": f"{parametros.codigofilial_sw}|master",
+    "username": "1|master",
     "password": "cdc2103",
     "unidadeid": "undefined",
 }
@@ -71,8 +71,8 @@ headers = {
     "authorization": "Bearer " + access_token,
     "Content-Type": "application/json",
 }
-data = {"nome": "", "tipo": ""}
-url = 'http://onoderapt.swerp.com.br/api/servico/lista/?j={%22nome%22:%22%22,%22tipo%22:%22%22}'
+data = {"nome": "", "tipo": "", "mostraInativo": 'true'}
+url = 'http://onoderapt.swerp.com.br/api/servico/lista/?j={%22nome%22:%22%22,%22tipo%22:%22%22,%22mostraInativo%22:true}'
 
 response = requests.get(url=url, data=json.dumps(data), headers=headers)
 servicos_json = response.json()
@@ -166,8 +166,6 @@ for servico_json in servicos_json:
                         criaTraducaoId("servico", response_servico_json["codigoServico"], "sku", sku.id)
                     elif sku_id != sku.id:
                         atualizaTraducaoId("servico", response_servico_json["codigoServico"], "sku", sku.id)
-
-                    print(f"Sku (service) {sku.name} {acao}")
 
                 if sku_id is None:
                     # ASSOCIA SKU AO CANAL DE VENDA PADRÃO

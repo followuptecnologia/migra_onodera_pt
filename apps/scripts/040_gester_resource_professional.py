@@ -94,7 +94,7 @@ for coluna_json in colunas_json:
         with transaction.atomic(using="gester"):
             response_coluna_json = response.json()
 
-            access_user_id = leTraducaoId("usuario", response_coluna_json["usuarioId"], "access_user")
+            access_user_id = leTraducaoId("funcionario", response_coluna_json["usuarioId"], "access_user")
             access_user = AccessUser.objects.filter(id=access_user_id).first()
 
             if response_coluna_json["usuarioId"] is None or access_user is None:
@@ -131,7 +131,7 @@ for coluna_json in colunas_json:
                     partner.name = ifNone(response_coluna_json["nome"], "")
                     partner.first_name = pessoa_nomes[0] if len(pessoa_nomes) >= 1 else ""
                     partner.last_name = pessoa_nomes[1] if len(pessoa_nomes) >= 2 else ""
-                    partner.login_name = response_colaborador_json["login"]
+                    partner.login_name = ifNone(response_colaborador_json["login"], f"login_{response_coluna_json['usuarioId']}")
                     partner.password = "SEM SENHA"
                     partner.person_type = "natural"
                     #   partner.federal_tax_number = ifNone(format_cpf(response_colaborador_json["cpf"]), "")
@@ -146,7 +146,7 @@ for coluna_json in colunas_json:
                     partner.whatsapp_number = ""
                     partner.trade_name = ""
                     partner.marital_status = ""
-                    partner.email = response_colaborador_json['email']
+                    partner.email = ifNone(response_colaborador_json['email'], f"consultor_{response_coluna_json['id']}@onodera.com.br")
                     partner.schedule_notification_mail = False
                     partner.schedule_notification_whatsapp = False
                     partner.schedule_notification_sms = False
@@ -283,7 +283,7 @@ for coluna_json in colunas_json:
 
             else:
                 access_user_id = leTraducaoId(
-                    "usuario", response_coluna_json["usuarioId"], "access_user"
+                    "funcionario", response_coluna_json["usuarioId"], "access_user"
                 )
                 access_user = AccessUser.objects.filter(id=access_user_id).first()
                 partner = Partner.objects.filter(id=access_user.partner_id).first()

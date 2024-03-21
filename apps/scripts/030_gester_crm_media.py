@@ -104,7 +104,7 @@ for midia_json in midias_json:
             crm_media_group.created_by_id = 1
             crm_media_group.created_on = datetime.now().astimezone()
             crm_media_group.save()
-            print(f"CrmMediaGroup {crm_media_group.name} {acao}")
+            print(f"CrmMediaGroup {crm_media_group.name} criado")
 
             criaTraducaoId(
                 "origem_cadastro",
