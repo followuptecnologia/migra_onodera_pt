@@ -2781,6 +2781,8 @@ class SalesOrderSku(models.Model):
     has_cancelled = models.BooleanField(default=False)
     quantity_desconted_bkp = models.IntegerField(default=0)
     quantity_script_execution = models.IntegerField(default=0)
+    quantity_scheduled_exceeded = models.IntegerField(default=0)
+    quantity_used_exceeded = models.IntegerField(default=0)
 
     class Meta:
         managed = False

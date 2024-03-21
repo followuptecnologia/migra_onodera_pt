@@ -315,7 +315,7 @@ for venda_json in vendas_json:
                     sales_order_sku.quantity_desconted = 0
                     sales_order_sku.has_cancelled = False
                     sales_order_sku.quantity_canceled_other_systems = 0
-
+                    sales_order_sku.quantity_scheduled_exceeded = 0
                     sales_order_sku.save()
 
                     if sales_order_sku_id is None:
