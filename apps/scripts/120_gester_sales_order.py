@@ -303,11 +303,11 @@ for venda_json in vendas_json:
 
                     if item["tipoItem"] == 'Serviço':
                         sales_order_sku.sku_id = leTraducaoId(
-                            "produto", item["itemId"], "sku"
+                            "servico", item["itemId"], "sku"
                         )
                     else:
                         sales_order_sku.sku_id = leTraducaoId(
-                            "servico", item["itemId"], "sku"
+                            "produto", item["itemId"], "sku"
                         )
 
                     sales_order_sku.updates_count = 0
