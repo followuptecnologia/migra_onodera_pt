@@ -1,4 +1,0 @@
-asgiref==3.7.2
-Django==5.0.3
-jsonpath==0.82.2
-sqlparse==0.4.4
