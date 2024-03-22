@@ -199,17 +199,17 @@ for agendamento_list_json in agendamentos_list_json:
                     # ATRIBUI O STATUS DO AGENDAMENTO #
                     status_name = ""
 
-                    if response_agendamento_json["idStatus"] == 4:  # Executado
+                    if response_agendamento_json["idStatus"] == '4':  # Executado
                         status_name = "finished"
-                    elif response_agendamento_json["idStatus"] == 7:  # Excluido
+                    elif response_agendamento_json["idStatus"] == '7':  # Excluido
                         status_name = "canceled"
-                    elif response_agendamento_json["idStatus"] == 5:  # Faltou
+                    elif response_agendamento_json["idStatus"] == '5':  # Faltou
                         status_name = "missed"
-                    elif response_agendamento_json["idStatus"] == 2:  # Confirmado
+                    elif response_agendamento_json["idStatus"] == '2':  # Confirmado
                         status_name = "confirmed"
-                    elif response_agendamento_json["idStatus"] == 1:  # Agendado
+                    elif response_agendamento_json["idStatus"] == '1':  # Agendado
                         status_name = "scheduled"
-                    elif response_agendamento_json["idStatus"] == 3:  # Presente
+                    elif response_agendamento_json["idStatus"] == '3':  # Presente
                         status_name = "confirmed"
                     else:
                         status_name = "paused"
