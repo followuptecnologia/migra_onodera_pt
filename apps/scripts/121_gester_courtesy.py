@@ -235,7 +235,7 @@ for customer in customers:
                 sales_order_sku.unit_list_price = 0
                 sales_order_sku.total_list_price = 0
                 sales_order_sku.discount_percent = 100
-                sales_order_sku.discount_value = price_list_sku.price if price_list_sku else 0
+                sales_order_sku.discount_value = (price_list_sku.price if price_list_sku else 0) * cortesia_json["quantidade"]
                 sales_order_sku.total_net_price = 0
                 sales_order_sku.total_effective_price = 0
                 sales_order_sku.expiration_date = sale_expiration_date
@@ -283,7 +283,7 @@ for customer in customers:
                         is_template=False,
                         quantity=0,
                         discount_percent=100,
-                        discount_value=price_list_sku.price if price_list_sku else 0,
+                        discount_value=(price_list_sku.price if price_list_sku else 0) * cortesia_json["quantidade"],
                         editable=True,
                         removable=True,
                         corporate_group_id=parametros.corporate_group_id,
