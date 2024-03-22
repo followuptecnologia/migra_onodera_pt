@@ -213,7 +213,7 @@ for venda_json in vendas_json:
                     sales_order.indicator_partner_id = (
                         usuarioindicacao.partner_id
                         if usuarioindicacao
-                        else sales_order.indicator_partner_id
+                        else None
                     )
 
                 ## CLIENTE INDICADOR ##

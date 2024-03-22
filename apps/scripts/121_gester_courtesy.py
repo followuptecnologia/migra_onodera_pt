@@ -25,7 +25,7 @@ from apps import parametros
 from apps.migrate.onodera.save.models import (
     CorporateGroupUnity, Partner, SalesOrder, AccessUser, SalesOrderSku,
     Sku, PartnerUnityCustomer, SalesDiscountSku,
-    LegacyTranslateId,
+    LegacyTranslateId, PriceListUnity, PriceListSku,
 )
 
 corporate_group_unity = CorporateGroupUnity.objects.filter(
@@ -203,6 +203,17 @@ for customer in customers:
                 )
                 continue
 
+            # BUSCA O VALOR DO SKU EM 'PriceListSku' NA TABELA CORRENTE DA UNIDADE #
+            price_list_unity = PriceListUnity.objects.filter(
+                corporate_group_unity_id=corporate_group_unity.id,
+                current=True,
+            ).first()
+
+            price_list_sku = PriceListSku.objects.filter(
+                sku_id=sku.id,
+                price_list_id=price_list_unity.price_list_id,
+            ).first()
+
             if sales_order_sku is None or parametros.update_if_exists:
                 if not sales_order_sku:
                     sales_order_sku = SalesOrderSku()
@@ -220,11 +231,11 @@ for customer in customers:
                 sales_order_sku.quantity_cancelled = 0
                 sales_order_sku.quantity_desconted = 0
                 sales_order_sku.finished = False
-                sales_order_sku.price = 0
+                sales_order_sku.price = price_list_sku.price if price_list_sku else 0
                 sales_order_sku.unit_list_price = 0
                 sales_order_sku.total_list_price = 0
                 sales_order_sku.discount_percent = 100
-                sales_order_sku.discount_value = 0
+                sales_order_sku.discount_value = price_list_sku.price if price_list_sku else 0
                 sales_order_sku.total_net_price = 0
                 sales_order_sku.total_effective_price = 0
                 sales_order_sku.expiration_date = sale_expiration_date
@@ -272,7 +283,7 @@ for customer in customers:
                         is_template=False,
                         quantity=0,
                         discount_percent=100,
-                        discount_value=0,
+                        discount_value=price_list_sku.price if price_list_sku else 0,
                         editable=True,
                         removable=True,
                         corporate_group_id=parametros.corporate_group_id,
