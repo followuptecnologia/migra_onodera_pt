@@ -3,7 +3,9 @@ import os
 import sys
 from datetime import datetime, timedelta
 
+import pytz
 from django.db import transaction
+from django.utils import timezone
 from termcolor import colored
 import django
 import jsonpath
@@ -26,6 +28,14 @@ from apps.migrate.onodera.save.models import (
     Sku, PartnerUnityCustomer,
     LegacyTranslateId, Schedule, ScheduleStatus, ScheduleSku, ScheduleSkuResource, ScheduleStatusDetail, Resource,
 )
+
+
+def verifica_horario_verao(data_agenda):
+    data_format = datetime.strptime(data_agenda, '%d/%m/%Y')
+    tz = pytz.timezone("Europe/Lisbon")
+    horario_verao = tz.localize(data_format).dst() != timedelta(0)
+    return horario_verao
+
 
 corporate_group_unity = CorporateGroupUnity.objects.filter(
     id=parametros.codigo_gester
@@ -121,8 +131,10 @@ for customer in customers:
                     created_on = datetime.strptime(response_agendamento_json["dataCriacao"], "%d/%m/%Y às %H:%M")
                     created_on_format = created_on.strftime("%Y-%m-%d %H:%M")
 
-                    if response_agendamento_json["dataAlteracao"] is not None and response_agendamento_json["dataAlteracao"] != "":
-                        last_edit_on = datetime.strptime(response_agendamento_json["dataAlteracao"], "%d/%m/%Y às %H:%M")
+                    if response_agendamento_json["dataAlteracao"] is not None and response_agendamento_json[
+                        "dataAlteracao"] != "":
+                        last_edit_on = datetime.strptime(response_agendamento_json["dataAlteracao"],
+                                                         "%d/%m/%Y às %H:%M")
                         last_edit_on_format = created_on.strftime("%Y-%m-%d %H:%M")
                     else:
                         last_edit_on_format = None
@@ -184,7 +196,11 @@ for customer in customers:
                             hora = datetime.strptime(response_agendamento_json["hora"], "%H:%M")
                             data_hora = datetime(year=data.year, month=data.month, day=data.day,
                                                  hour=hora.hour, minute=hora.minute, second=0)
-                            schedule.begin_time = data_hora
+                            schedule.begin_time = (
+                                data_hora - timedelta(hours=4)
+                                if verifica_horario_verao(response_agendamento_json["data"])
+                                else data_hora - timedelta(hours=3)
+                            )
 
                             schedule.attendance_time = 0
                             ### BUSCA A DURAÇÃO DO SERVIÇO ###

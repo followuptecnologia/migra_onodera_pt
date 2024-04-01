@@ -3,6 +3,7 @@ import os
 import sys
 from datetime import datetime, timedelta
 
+import pytz
 from django.db import transaction
 from termcolor import colored
 import django
@@ -26,6 +27,14 @@ from apps.migrate.onodera.save.models import (
     Sku,
     Schedule, ScheduleStatus, ScheduleSku, ScheduleSkuResource, ScheduleStatusDetail, Resource,
 )
+
+
+def verifica_horario_verao(data_agenda):
+    data_format = datetime.strptime(data_agenda, '%d/%m/%Y')
+    tz = pytz.timezone("Europe/Lisbon")
+    horario_verao = tz.localize(data_format).dst() != timedelta(0)
+    return horario_verao
+
 
 corporate_group_unity = CorporateGroupUnity.objects.filter(
     id=parametros.codigo_gester
@@ -158,7 +167,11 @@ for agendamento_list_json in agendamentos_list_json:
                     hora = datetime.strptime(response_agendamento_json["hora"], "%H:%M")
                     data_hora = datetime(year=data.year, month=data.month, day=data.day,
                                          hour=hora.hour, minute=hora.minute, second=0)
-                    schedule.begin_time = data_hora
+                    schedule.begin_time = (
+                                data_hora - timedelta(hours=4)
+                                if verifica_horario_verao(response_agendamento_json["data"])
+                                else data_hora - timedelta(hours=3)
+                            )
 
                     schedule.attendance_time = 0
                     ### BUSCA A DURAÇÃO DO SERVIÇO ###
