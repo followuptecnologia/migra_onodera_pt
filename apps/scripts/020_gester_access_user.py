@@ -5,6 +5,7 @@ from datetime import datetime
 
 from django.db import transaction
 from django.db.models import Q
+from django.utils.timezone import now
 from termcolor import colored
 import django
 import jsonpath
@@ -106,7 +107,7 @@ for colaborador_json in colaboradores_json:
                     response_colaborador_json["dataAdmissao"], "%d/%m/%Y"
                 ).strftime("%Y-%m-%d")
             else:
-                data_admissao = None
+                data_admissao = now()
             ## CRIA OS PERFIS ##
             access_profile = AccessProfile.objects.filter(
                 name=response_colaborador_json["nomeGrupo"]
@@ -149,7 +150,7 @@ for colaborador_json in colaboradores_json:
                         profile_permission.save()
 
             partner_id = leTraducaoId(
-                "funcionario", response_colaborador_json, "partner"
+                "funcionario", response_colaborador_json["id"], "partner"
             )
             partner = Partner.objects.filter(id=partner_id).first()
 
