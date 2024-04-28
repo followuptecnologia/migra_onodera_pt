@@ -101,9 +101,12 @@ for colaborador_json in colaboradores_json:
     if response.status_code == 200:
         with transaction.atomic(using="gester"):
             response_colaborador_json = response.json()
-            data_admissao = datetime.strptime(
-                response_colaborador_json["dataAdmissao"], "%d/%m/%Y"
-            ).strftime("%Y-%m-%d")
+            if response_colaborador_json["dataAdmissao"] is not None and response_colaborador_json["dataAdmissao"] != '':
+                data_admissao = datetime.strptime(
+                    response_colaborador_json["dataAdmissao"], "%d/%m/%Y"
+                ).strftime("%Y-%m-%d")
+            else:
+                data_admissao = None
             ## CRIA OS PERFIS ##
             access_profile = AccessProfile.objects.filter(
                 name=response_colaborador_json["nomeGrupo"]
