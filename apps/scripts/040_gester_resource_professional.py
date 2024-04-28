@@ -128,8 +128,6 @@ for coluna_json in colunas_json:
                     except:
                         pessoa_nomes = []
 
-                    print('response_coluna_json = ', response_coluna_json)
-
                     partner.created_on = datetime.now().astimezone()
                     partner.last_edit_on = datetime.now().astimezone()
                     partner.created_by_id = 1
@@ -139,7 +137,10 @@ for coluna_json in colunas_json:
                     partner.name = ifNone(response_coluna_json["nome"], "")
                     partner.first_name = pessoa_nomes[0] if len(pessoa_nomes) >= 1 else ""
                     partner.last_name = pessoa_nomes[1] if len(pessoa_nomes) >= 2 else ""
-                    partner.login_name = ifNone(response_colaborador_json["login"], f"login_{response_coluna_json['usuarioId']}")
+                    try:
+                        partner.login_name = ifNone(response_colaborador_json["login"], f"login_{response_coluna_json['usuarioId']}")
+                    except:
+                        partner.login_name = f"login_{response_coluna_json['usuarioId']}"
                     partner.password = "SEM SENHA"
                     partner.person_type = "natural"
                     #   partner.federal_tax_number = ifNone(format_cpf(response_colaborador_json["cpf"]), "")
