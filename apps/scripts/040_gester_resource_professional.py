@@ -128,6 +128,8 @@ for coluna_json in colunas_json:
                     except:
                         pessoa_nomes = []
 
+                    print('response_coluna_json = ', response_coluna_json)
+
                     partner.created_on = datetime.now().astimezone()
                     partner.last_edit_on = datetime.now().astimezone()
                     partner.created_by_id = 1
