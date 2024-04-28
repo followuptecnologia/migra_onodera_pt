@@ -97,7 +97,7 @@ for coluna_json in colunas_json:
             access_user_id = leTraducaoId("funcionario", response_coluna_json["usuarioId"], "access_user")
             access_user = AccessUser.objects.filter(id=access_user_id).first()
 
-            if response_coluna_json["usuarioId"] is None or access_user is None:
+            if response_coluna_json and response_coluna_json["usuarioId"] is None or access_user is None:
                 access_user_id = leTraducaoId("consultor", response_coluna_json["id"], "access_user")
                 access_user = AccessUser.objects.filter(id=access_user_id).first()
 
@@ -127,8 +127,6 @@ for coluna_json in colunas_json:
                             pessoa_nomes = []
                     except:
                         pessoa_nomes = []
-
-                    print(response_colaborador_json)
 
                     partner.created_on = datetime.now().astimezone()
                     partner.last_edit_on = datetime.now().astimezone()
