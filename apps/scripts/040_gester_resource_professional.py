@@ -120,9 +120,12 @@ for coluna_json in colunas_json:
                     partner = Partner()
                     acao = "criado"
 
-                    if response_coluna_json["nome"] is not None:
-                        pessoa_nomes = response_coluna_json["usuarioId"].split(" ", 1)
-                    else:
+                    try:
+                        if response_coluna_json["nome"] is not None:
+                            pessoa_nomes = response_coluna_json["usuarioId"].split(" ", 1)
+                        else:
+                            pessoa_nomes = []
+                    except:
                         pessoa_nomes = []
 
                     partner.created_on = datetime.now().astimezone()
