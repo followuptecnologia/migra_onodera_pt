@@ -161,7 +161,10 @@ for coluna_json in colunas_json:
                     partner.whatsapp_number = ""
                     partner.trade_name = ""
                     partner.marital_status = ""
-                    partner.email = ifNone(response_colaborador_json['email'], f"consultor_{response_coluna_json['id']}@onodera.com.br")
+                    try:
+                        partner.email = ifNone(response_colaborador_json['email'], f"consultor_{response_coluna_json['id']}@onodera.com.br")
+                    except:
+                        partner.email = ''
                     partner.schedule_notification_mail = False
                     partner.schedule_notification_whatsapp = False
                     partner.schedule_notification_sms = False
