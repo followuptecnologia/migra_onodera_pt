@@ -105,11 +105,14 @@ for coluna_json in colunas_json:
                 response = requests.get(url=url, headers=headers)
                 response_colaborador_json = response.json()
 
-                if response_colaborador_json["sexo"] == "MASCULINO":
-                    sexo = "male"
-                elif response_colaborador_json["sexo"] == "FEMININO":
-                    sexo = "female"
-                else:
+                try:
+                    if response_colaborador_json["sexo"] == "MASCULINO":
+                        sexo = "male"
+                    elif response_colaborador_json["sexo"] == "FEMININO":
+                        sexo = "female"
+                    else:
+                        sexo = "female"
+                except:
                     sexo = "female"
 
                 if not access_user:
