@@ -188,7 +188,10 @@ for coluna_json in colunas_json:
                     partner.bank = ""
                     partner.agency = ""
                     partner.checking_account = ""
-                    partner.foreign_tax_number = ifNone(response_colaborador_json["cpf"], "")
+                    try:
+                        partner.foreign_tax_number = ifNone(response_colaborador_json["cpf"], "")
+                    except:
+                        partner.foreign_tax_number = ''
                     partner.identity_card_number = ""
                     partner.issuing_agency = ""
                     partner.receive_email = False
