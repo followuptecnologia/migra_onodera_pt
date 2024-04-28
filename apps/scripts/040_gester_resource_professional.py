@@ -149,8 +149,14 @@ for coluna_json in colunas_json:
                     partner.federal_register_number = ""
                     partner.birth_date = None
                     partner.genre = sexo
-                    partner.mobile = f"351{response_colaborador_json['celular']}"
-                    partner.phone = f"351{response_colaborador_json['telefone']}"
+                    try:
+                        partner.mobile = f"351{response_colaborador_json['celular']}"
+                    except:
+                        partner.mobile = ''
+                    try:
+                        partner.phone = f"351{response_colaborador_json['telefone']}"
+                    except:
+                        partner.phone = ''
                     partner.business_phone = ""
                     partner.whatsapp_number = ""
                     partner.trade_name = ""
