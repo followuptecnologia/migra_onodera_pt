@@ -360,7 +360,7 @@ for colaborador_json in colaboradores_json:
                             Q(email=access_user.email) & ~Q(id=access_user.id)
                         ).first()
                         if another_email:
-                            access_user.email = f"funcionario_{response_colaborador_json['id']}@onoderapt.com.br"
+                            access_user.email = f"funcionario_.{response_colaborador_json['id']}@onoderapt.com.br"
 
                         access_user.save()
 
