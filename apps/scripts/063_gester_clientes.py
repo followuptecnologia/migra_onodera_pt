@@ -83,7 +83,7 @@ data = {
     "modeloRelatorio": "1",
     "e": f"{parametros.nomefilial_sw}",
 }
-url = "http://onoderapt.swerp.com.br/api/relatorios/Cliente_ListagemCliente/?j={%22dataDe%22:%22%22,%22dataAte%22:%22%22,%22dataCadastroDe%22:%22%22,%22dataCadastroAte%22:%22%22,%22isCliente%22:true,%22isExCliente%22:true,%22isProspect%22:true,%22modeloRelatorio%22:%221%22,%22e%22:%22Braga%22}"
+url = "http://onoderapt.swerp.com.br/api/relatorios/Cliente_ListagemCliente/?j={%22dataDe%22:%22%22,%22dataAte%22:%22%22,%22dataCadastroDe%22:%22%22,%22dataCadastroAte%22:%22%22,%22isCliente%22:true,%22isExCliente%22:true,%22isProspect%22:true,%22modeloRelatorio%22:%221%22,%22e%22:%22Porto%22}"
 
 # LISTA TODOS OS CLIENTES ATRAVES DO RELATORIO #
 response = requests.get(url=url, data=json.dumps(data), headers=headers)

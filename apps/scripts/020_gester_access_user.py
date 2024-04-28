@@ -75,7 +75,7 @@ headers = {
     "Content-Type": "application/json",
 }
 data = {"nome": " "}
-url = 'http://onoderapt.swerp.com.br/api/colaboradores/lista?j={"nome":"","perfilUsuario":[],"mostrarPor":["1","0"],"e":"Braga"}'
+url = 'http://onoderapt.swerp.com.br/api/colaboradores/lista?j={"nome":"","perfilUsuario":[],"mostrarPor":["1","0"],"e":"Porto"}'
 
 response = requests.get(url=url, data=json.dumps(data), headers=headers)
 colaboradores_json = response.json()
