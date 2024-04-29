@@ -194,14 +194,14 @@ for coluna_json in colunas_json:
                         if not schedule_lock_resource_id:
                             criaTraducaoId(
                                 "consultor_horario",
-                                resource["id"],
+                                excecao["id"],
                                 "schedule_lock_resource",
                                 schedule_lock_resource.id,
                             )
                         else:
                             atualizaTraducaoId(
                                 "consultor_horario",
-                                resource["id"],
+                                excecao["id"],
                                 "schedule_lock_resource",
                                 schedule_lock_resource.id,
                             )
