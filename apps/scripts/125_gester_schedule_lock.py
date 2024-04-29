@@ -137,15 +137,25 @@ for coluna_json in colunas_json:
                         schedule_lock.reason = str(
                             ifNone(excecao["descricao"], "")
                         ).upper()
+
+                        data = datetime.strptime(excecao["data"], "%d/%m/%Y %H:%M")
+                        data_hora = datetime(year=data.year, month=data.month, day=data.day,
+                                             hour=data.hour, minute=data.minute, second=0)
+
                         schedule_lock.begin_time = (
-                                excecao["data"] - timedelta(hours=4)
-                                if verifica_horario_verao(excecao["data"])
-                                else excecao["data"] - timedelta(hours=3)
+                            data_hora - timedelta(hours=4)
+                            if verifica_horario_verao(data_hora)
+                            else data_hora - timedelta(hours=3)
                         )
+
+                        data_fim = datetime.strptime(excecao["data"], "%d/%m/%Y %H:%M")
+                        data_hora_fim = datetime(year=data_fim.year, month=data_fim.month, day=data_fim.day,
+                                                 hour=data_fim.hour, minute=data_fim.minute, second=0)
+
                         schedule_lock.end_time = (
-                                excecao["dataFim"] - timedelta(hours=4)
-                                if verifica_horario_verao(excecao["dataFim"])
-                                else excecao["dataFim"] - timedelta(hours=3)
+                            data_hora_fim - timedelta(hours=4)
+                            if verifica_horario_verao(data_hora_fim)
+                            else data_hora_fim - timedelta(hours=3)
                         )
 
                         if "FERIADO" in schedule_lock.reason:
