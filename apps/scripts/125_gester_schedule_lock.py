@@ -33,7 +33,7 @@ from apps.migrate.onodera.save.models import (
 
 
 def verifica_horario_verao(data_agenda):
-    data_format = datetime.strptime(data_agenda, '%d/%m/%Y')
+    data_format = datetime.strptime(data_agenda, '%Y-%m-%d %H:%M:%S')
     tz = pytz.timezone("Europe/Lisbon")
     horario_verao = tz.localize(data_format).dst() != timedelta(0)
     return horario_verao
@@ -138,23 +138,23 @@ for coluna_json in colunas_json:
                             ifNone(excecao["descricao"], "")
                         ).upper()
 
-                        data = datetime.strptime(excecao["data"], "%d/%m/%Y %H:%M")
+                        data = datetime.strptime(excecao["data"], "%Y-%m-%dT%H:%M:%S")
                         data_hora = datetime(year=data.year, month=data.month, day=data.day,
                                              hour=data.hour, minute=data.minute, second=0)
 
                         schedule_lock.begin_time = (
                             data_hora - timedelta(hours=4)
-                            if verifica_horario_verao(data_hora)
+                            if verifica_horario_verao(str(data_hora))
                             else data_hora - timedelta(hours=3)
                         )
 
-                        data_fim = datetime.strptime(excecao["data"], "%d/%m/%Y %H:%M")
+                        data_fim = datetime.strptime(excecao["dataFim"], "%Y-%m-%dT%H:%M:%S")
                         data_hora_fim = datetime(year=data_fim.year, month=data_fim.month, day=data_fim.day,
                                                  hour=data_fim.hour, minute=data_fim.minute, second=0)
 
                         schedule_lock.end_time = (
                             data_hora_fim - timedelta(hours=4)
-                            if verifica_horario_verao(data_hora_fim)
+                            if verifica_horario_verao(str(data_hora_fim))
                             else data_hora_fim - timedelta(hours=3)
                         )
 
