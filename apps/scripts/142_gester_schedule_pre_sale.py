@@ -222,7 +222,7 @@ for agendamento_list_json in agendamentos_list_json:
                         except:
                             schedule.end_time = schedule.begin_time
                     else:
-                        print(f"Servico nao encontrado, ID: {response_agendamento_json['tratamntoId']}")
+                        print(f"Servico nao encontrado")
                         continue
 
                     # ATRIBUI O STATUS DO AGENDAMENTO #
