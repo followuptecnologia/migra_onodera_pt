@@ -1,8 +1,9 @@
 import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 
+import pytz
 from django.db import transaction
 from termcolor import colored
 import django
@@ -29,6 +30,14 @@ from apps.migrate.onodera.save.models import (
     Resource,
     ScheduleLock, ScheduleLockResource,
 )
+
+
+def verifica_horario_verao(data_agenda):
+    data_format = datetime.strptime(data_agenda, '%d/%m/%Y')
+    tz = pytz.timezone("Europe/Lisbon")
+    horario_verao = tz.localize(data_format).dst() != timedelta(0)
+    return horario_verao
+
 
 corporate_group_unity = CorporateGroupUnity.objects.filter(
     id=parametros.codigo_gester
@@ -128,11 +137,15 @@ for coluna_json in colunas_json:
                         schedule_lock.reason = str(
                             ifNone(excecao["descricao"], "")
                         ).upper()
-                        schedule_lock.begin_time = excecao["data"]
+                        schedule_lock.begin_time = (
+                                excecao["data"] - timedelta(hours=4)
+                                if verifica_horario_verao(excecao["data"])
+                                else excecao["data"] - timedelta(hours=3)
+                        )
                         schedule_lock.end_time = (
-                            excecao["dataFim"]
-                            if excecao["data"] <= excecao["dataFim"]
-                            else excecao["data"]
+                                excecao["dataFim"] - timedelta(hours=4)
+                                if verifica_horario_verao(excecao["dataFim"])
+                                else excecao["dataFim"] - timedelta(hours=3)
                         )
 
                         if "FERIADO" in schedule_lock.reason:
